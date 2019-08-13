@@ -52,7 +52,8 @@ public class FileController {
                 counter++;
                 if(counter == 5){
                     counter = 0;
-                    createUserFromLines(strArr);
+                    ConsoleRunner.users.add(createUserFromLines(strArr));
+
                     strArr = new String[5];
                 }
             }

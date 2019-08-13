@@ -5,61 +5,104 @@ import java.util.*;
 
 public class ConsoleRunner {
 
-    private static HashSet<User> users = new HashSet<>();
-
-    private static int id = 0;
+    static HashSet<User> users = new HashSet<>();
 
     public static void main(String[] args) throws IOException {
-//        User user1 = new User();
-//        user1.name = "Dima";
-//        user1.surname = "jdsfbjhg";
-//        user1.email = "jlsbfhs@lksh.sdf";
-//        user1.roles = new ArrayList<>(Arrays.asList("role1","role2","role3"));
-//        user1.phones = new ArrayList<>(Arrays.asList("18364523671","23852736","3274576"));
-//
-//        User user2 = new User();
-//        user2.name = "sfhsh";
-//        user2.surname = "dshdhsd";
-//        user2.email = "dshsdh@hds.ahs";
-//        user2.roles = new ArrayList<>(Arrays.asList("dshh","shjsjnf","shsthsfh"));
-//        user2.phones = new ArrayList<>(Arrays.asList("3462563","346565","56256524"));
-//
-//        users.add(user1);
-//        users.add(user2);
-//        FileController.writeUsers(users);
 
         FileController.readFile();
+        menu();
+        FileController.writeUsers(users);
 
+    }
 
+    public static void printUsers() {
+        for (User user : users) {
+            System.out.printf("%-10s %-10s %-20s\nRoles: %s\nPhones: %10s\n",user.name,user.surname,user.email,user.roles,user.phones);
+            System.out.println();
+        }
+    }
 
+    public static void createUser(){
+        User user = new User();
+        Scanner sc=new Scanner(System.in);
 
+        System.out.println("name: ");
+        user.name  = sc.nextLine();
 
+        System.out.println("surname: ");
+        user.surname = sc.nextLine();
 
+        System.out.println("email: ");
+        String email = sc.nextLine();
+        while(!email.matches("(\\w{3,})@(\\w+\\.)([a-z]{2,4})")){
+            System.out.println("invalid email");
+            System.out.println("email: ");
+            email = sc.nextLine();
+        }
+        user.email = email;
 
+        System.out.println("roles (from 1 to 3 comma separated): ");
+        String[] rolesArr = sc.nextLine().split("(\\p{Blank}+)?,(\\p{Blank}+)?");
+        while(rolesArr.length < 1 || rolesArr.length > 3){
+            System.out.println("invalid roles");
+            System.out.println("roles (from 1 to 3 comma separated): ");
+            rolesArr = sc.nextLine().split("(\\p{Blank}+)?,(\\p{Blank}+)?");
+        }
+        user.roles = new ArrayList<>(Arrays.asList(rolesArr));
 
+        System.out.println("phones as 375** ******* (from 1 to 3 comma separated): ");
+        String[] phonesArr = sc.nextLine().split("(\\p{Blank}+)?,(\\p{Blank}+)?");
+        while(phonesArr.length < 1 || phonesArr.length > 3){
+            System.out.println("invalid number of phones");
+            System.out.println("phones as 375** ******* (from 1 to 3 comma separated): ");
+            phonesArr = sc.nextLine().split("(\\p{Blank}+)?,(\\p{Blank}+)?");
+        }
+        for (int i = 0; i < phonesArr.length; i++) {
+            while (!phonesArr[i].matches("375[0-9]{2}(\\p{Blank}+)[0-9]{7}")) {
+                System.out.printf("invalid phone number - %s\nfor example 375** *******\nphone: ", phonesArr[i]);
+                phonesArr[i] = sc.nextLine();
+            }
+        }
+        user.phones = new ArrayList<>(Arrays.asList(phonesArr));
+        users.add(user);
+    }
 
+    public static void menu(){
+        Scanner sc=new Scanner(System.in);
 
-//	    Scanner sc=new Scanner(System.in);
-//	    String line;
+        System.out.println("============================");
+        System.out.println("|      MENU SELECTION      |");
+        System.out.println("============================");
+        System.out.println("| Options:                 |");
+        System.out.println("|        1. Create         |");
+        System.out.println("|        2. View           |");
+        System.out.println("|        3. Edit           |");
+        System.out.println("|        4. Exit           |");
+        System.out.println("============================");
+        int item = sc.nextInt();
 
-//        System.out.println("Для создания пользователя введите: имя, фамилия, email, роли, мобильные телефоны(Количество ролей и телефонов от 1 до 3-х.)");
-//        System.out.println("Для поиска пользователя введите \"find\" и затем");
-//        System.out.println("Для печати всех пользоватедлей введите \"printall\"");
-//        System.out.println("Для завершения программы введите \"end\"");
-//
-//        while(!(line = sc.nextLine()).equals("end")){
-//            if(line.equals("printall")) {
-//                printUsers();
-//            }else{
-//                Var result = parser.calc(line);
-//                printer.print(result);
-//            }
-//        }
-//    }
-//
-//    public static void printUsers() {
-//        for(Map.Entry<Integer, String> entry: users.entrySet()){
-//            System.out.println(entry.getKey()+": "+entry.getValue());
-//        }
+        switch (item) {
+            case 1:
+                System.out.println("Create selected");
+                createUser();
+                menu();
+                break;
+            case 2:
+                System.out.println("View selected");
+                printUsers();
+                menu();
+                break;
+            case 3:
+                System.out.println("Edit selected");
+                menu();
+                break;
+            case 4:
+                System.out.println("Exit selected");
+                break;
+            default:
+                System.out.println("Invalid selection");
+                menu();
+                break;
+        }
     }
 }
