@@ -98,10 +98,10 @@ public class ConsoleRunner {
 
         Scanner sc=new Scanner(System.in);
 
-        System.out.println("type one of user items for searching: ");
-        String searchWord = sc.next();
-        Iterator<User> userIterator = users.iterator();
         while (!(findUsers.size()>0)) {
+            System.out.println("type one of user items for searching: ");
+            String searchWord = sc.nextLine();
+            Iterator<User> userIterator = users.iterator();
             while (userIterator.hasNext()) {
                 User iterableUser = userIterator.next();
                 if (iterableUser.name.equals(searchWord)
@@ -111,6 +111,9 @@ public class ConsoleRunner {
                         || iterableUser.phones.contains(searchWord)) {
                     findUsers.add(iterableUser);
                 }
+            }
+            if(findUsers.size()==0) {
+                System.out.println("Nothing found");
             }
         }
         printUsers(findUsers);
@@ -158,12 +161,12 @@ public class ConsoleRunner {
             User editingUser = findUserIterator.next();
             System.out.printf("For edit name %s type new name else press enter: ",editingUser.name);
             String name = sc.nextLine();
-            if(name != null) {
+            if(!name.isEmpty()) {
                 editingUser.name = name;
             }
             System.out.printf("For edit surname %s type new surname else press enter: ",editingUser.surname);
             String surname = sc.nextLine();
-            if(surname != null) {
+            if(!surname.isEmpty()) {
                 editingUser.surname = surname;
             }
             System.out.printf("For edit email %s type new email else press enter: ",editingUser.email);
@@ -172,36 +175,49 @@ public class ConsoleRunner {
                 editingUser.email = validEmail(email);
             }
             for (int i = 0; i < editingUser.roles.size(); i++) {
-                System.out.printf("For edit role %s type new role else press enter: ",editingUser.roles.get(i));
+                System.out.printf("For edit role %s type new role, to delete type 'd', go to next press enter: ",editingUser.roles.get(i));
                 String role = sc.nextLine();
-                if(!role.isEmpty()){
+                if(role.equals("d")){
+                    editingUser.roles.remove(i);
+                    i--;
+                }else if(!role.isEmpty()){
                     editingUser.roles.set(i,role);
                 }
             }
             if(editingUser.roles.size()<3){
-                for (int i = editingUser.roles.size(); i <=3 ; i++) {
+                for (int i = editingUser.roles.size(); i <3 ; i++) {
                     System.out.println("Type new role for add: ");
-                    editingUser.roles.set(i,sc.nextLine());
+                    String newRole = sc.nextLine();
+                    if(!newRole.equals("")){
+                        editingUser.roles.add(newRole);
+                    }
                 }
             }
             for (int i = 0; i < editingUser.phones.size(); i++) {
-                System.out.printf("For edit phone %s type new role else press enter: ",editingUser.phones.get(i));
+                System.out.printf("For edit phone %s type new phone, to delete type 'd', go to next press enter: ",editingUser.phones.get(i));
                 String phone = sc.nextLine();
-                while (!validPhone(phone)) {
-                    System.out.printf("invalid phone number - %s\nfor example 375** *******\nphone: ", phone);
-                    phone = sc.nextLine();
-                }
-                editingUser.phones.set(i,phone);
-            }
-            if(editingUser.phones.size()<3){
-                for (int i = editingUser.phones.size(); i <=3 ; i++) {
-                    System.out.println("Type new phone for add: ");
-                    String phone = sc.nextLine();
+                if(phone.equals("d")){
+                    editingUser.phones.remove(i);
+                    i--;
+                }else if (!phone.equals("")) {
                     while (!validPhone(phone)) {
                         System.out.printf("invalid phone number - %s\nfor example 375** *******\nphone: ", phone);
                         phone = sc.nextLine();
                     }
-                    editingUser.phones.set(i,phone);
+                    editingUser.phones.set(i, phone);
+                }
+            }
+            if(editingUser.phones.size()<3){
+                for (int i = editingUser.phones.size(); i <3 ; i++) {
+                    System.out.println("Type new phone for add: ");
+                    String phone = sc.nextLine();
+                    if (!phone.equals("")) {
+                        while (!validPhone(phone)) {
+                            System.out.printf("invalid phone number - %s\nfor example 375** *******\nphone: ", phone);
+                            phone = sc.nextLine();
+                        }
+                        editingUser.phones.add(phone);
+                    }
                 }
             }
             users.add(editingUser);
@@ -211,7 +227,7 @@ public class ConsoleRunner {
 
     private static String validEmail(String str){
         Scanner sc=new Scanner(System.in);
-        while(!str.matches("(\\w{3,})@(\\w+\\.)([a-z]{2,4})")){
+        while(!str.matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")){
             System.out.println("invalid email");
             System.out.println("email: ");
             str = sc.nextLine();
