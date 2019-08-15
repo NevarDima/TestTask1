@@ -5,30 +5,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class FileController {
+class FileController {
 
     private static String usersTxt = getFilePath(FileController.class,"users.txt");
 
     static void writeUsers (HashSet<User> users) throws IOException {
-        String writeToFile = "";
+        StringBuilder writeToFile = new StringBuilder();
         String delimiter = "";
         for (User user : users) {
-            writeToFile += delimiter + convertToString(user);
+            writeToFile.append(delimiter).append(convertToString(user));
             delimiter = "\n";
         }
-        saveFile(writeToFile);
+        saveFile(writeToFile.toString());
     }
 
-    public static String convertToString(User user) {
-        String result =user.name
+    private static String convertToString(User user) {
+        return user.name
                 +"\n" + user.surname
                 +"\n" + user.email
                 +"\n" + user.getRoles()
                 +"\n" + user.getPhones();
-        return result;
     }
 
-    static void saveFile(String str) throws IOException {
+    private static void saveFile(String str) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(usersTxt))){
             out.println(str);
         } catch (IOException e) {
@@ -57,8 +56,6 @@ public class FileController {
                     strArr = new String[5];
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,8 +66,8 @@ public class FileController {
         user.name = strArr[0];
         user.surname = strArr[1];
         user.email =strArr[2];
-        user.roles = new ArrayList<>(Arrays.asList(strArr[3].split(",")));
-        user.phones = new ArrayList<>(Arrays.asList(strArr[4].split(",")));
+        user.roles = new ArrayList<>(Arrays.asList(strArr[3].split("(\\p{Blank}+)?,(\\p{Blank}+)?")));
+        user.phones = new ArrayList<>(Arrays.asList(strArr[4].split("(\\p{Blank}+)?,(\\p{Blank}+)?")));
         return user;
     }
 

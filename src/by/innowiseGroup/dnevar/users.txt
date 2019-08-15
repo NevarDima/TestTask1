@@ -1,15 +1,10 @@
-Dima2
+Alex
+Ivanov
+alex.ivanov@gmail.com
+AlexRole1,AlexRole2,AlexRole3
+37529 1111111,37529 2222222
+Dima
 Nevar
-nevar@gmail.com
-r1,r2,r3
-37529 3622159,37529 3622159,37529 3622159
-Dima1
-Nevar
-nevar@gmail.com
-r1,r2,r3
-37529 3622159,37529 3622159,37529 3622159
-Dima3
-Nevar
-dima.nevar@gmail.com
-newnewRole
-37522 2222222
+nevar.dima@gmail.com
+role1,role2,role3
+37529 3622159,37529 3622159

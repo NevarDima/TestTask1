@@ -3,7 +3,7 @@ package by.innowiseGroup.dnevar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+class User {
 
     String name;
     String surname;
@@ -11,24 +11,24 @@ public class User {
     List<String> roles = new ArrayList<>();
     List<String> phones = new ArrayList<>();
 
-    public String getRoles(){
-        String res = "";
+    String getRoles(){
+        StringBuilder res = new StringBuilder();
         String delimiter = "";
         for (int i = 0; i<roles.size(); i++) {
-            res += delimiter + roles.get(i);
+            res.append(delimiter).append(roles.get(i));
             delimiter = ",";
         }
-        return res;
+        return res.toString();
     }
 
 
-    public String getPhones() {
-        String res = "";
+    String getPhones() {
+        StringBuilder res = new StringBuilder();
         String delimiter = "";
         for (int i = 0; i<phones.size(); i++) {
-            res += delimiter + phones.get(i);
+            res.append(delimiter).append(phones.get(i));
             delimiter = ",";
         }
-        return res;
+        return res.toString();
     }
 }
