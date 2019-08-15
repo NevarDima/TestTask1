@@ -66,9 +66,15 @@ public class ConsoleRunner {
         System.out.println("|        3. Search         |");
         System.out.println("|        4. Exit           |");
         System.out.println("============================");
-        int item = sc.nextInt();
-
-        switch (item) {
+        String item = sc.nextLine();
+        int intItem = 0;
+        try {
+            intItem = Integer.parseInt(item);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid selection");
+            menu();
+        }
+        switch (intItem) {
             case 1:
                 System.out.println("Create selected");
                 createUser();
@@ -129,9 +135,15 @@ public class ConsoleRunner {
         System.out.println("|        2. Delete         |");
         System.out.println("|        3. Exit           |");
         System.out.println("============================");
-        int item = sc.nextInt();
-
-        switch (item) {
+        String item = sc.nextLine();
+        int intItem = 0;
+        try {
+            intItem = Integer.parseInt(item);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid selection");
+            editMenu();
+        }
+        switch (intItem) {
             case 1:
                 System.out.println("Edit selected");
                 editUser();
